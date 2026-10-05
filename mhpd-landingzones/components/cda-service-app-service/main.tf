@@ -20,7 +20,7 @@ resource "azurerm_linux_web_app" "this" {
   app_settings                  = local.cda_service_app_settings
   client_affinity_enabled       = true
   https_only                    = true
-  public_network_access_enabled = false
+  public_network_access_enabled = !local.pe_enabled
   virtual_network_subnet_id     = local.enable_vnet_integration ? local.apps_subnet_id : null
   tags                          = {}
 
@@ -131,7 +131,7 @@ resource "azurerm_linux_web_app_slot" "staging" {
   name           = "staging"
   app_service_id = azurerm_linux_web_app.this.id
   app_settings   = local.cda_service_app_settings
-  # Slot is always in VNet + deny-all for prod — no need to vary by pe_enabled.
+  # Slot is always in VNet + deny-all for prod â€” no need to vary by pe_enabled.
   client_affinity_enabled       = true
   https_only                    = true
   public_network_access_enabled = false
