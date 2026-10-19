@@ -75,7 +75,7 @@ locals {
     "KeyVaultConfiguration__KeyVaultURL"                    = "https://kv-${var.product}-${var.env}-${local.loc}.vault.azure.net/"
     "UriSettings__RedirectTargetUrl"                        = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk/ig/authorize" : "https://pdp-data-access-test-harness.netlify.app/"
     "JwtSettings__PrivateKey"                               = data.azurerm_key_vault_secret.cda_service_private_key.value
-    "JwtSettings__ExpiryInSeconds"                          = 600
+    "JwtSettings__ExpiryInSeconds"                          = 60
     "JwtSettings__Audience"                                 = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk" : "https://pdp-data-access-test-harness.netlify.app"
     "JwtSettings__Kid"                                      = data.azurerm_key_vault_secret.cda_service_kid.value
     "JwtSettings__Role"                                     = "owner"
