@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.4",
   "info": {
-    "title": "MaPSCDAService, Version=0.12.0.0, Culture=neutral, PublicKeyToken=null",
+    "title": "MaPSCDAService, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null",
     "version": "1.0"
   },
   "servers": [

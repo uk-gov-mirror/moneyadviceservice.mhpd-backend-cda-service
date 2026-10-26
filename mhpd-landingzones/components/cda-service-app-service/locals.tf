@@ -70,19 +70,39 @@ locals {
   redis_connection_string = "${data.azurerm_key_vault_secret.redis_endpoint.value}:10000,password=${data.azurerm_key_vault_secret.redis_primary_key.value},ssl=True,abortConnect=False,keepAlive=60,connectTimeout=3000,syncTimeout=3000"
 
   cda_service_app_settings = {
-    "APPLICATIONINSIGHTS_CONNECTION_STRING"                 = azurerm_application_insights.this.connection_string
-    "WEBSITE_ENABLE_SYNC_UPDATE_SITE"                       = "true"
-    "KeyVaultConfiguration__KeyVaultURL"                    = "https://kv-${var.product}-${var.env}-${local.loc}.vault.azure.net/"
-    "UriSettings__RedirectTargetUrl"                        = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk/ig/authorize" : "https://pdp-data-access-test-harness.netlify.app/"
-    "JwtSettings__PrivateKey"                               = data.azurerm_key_vault_secret.cda_service_private_key.value
-    "JwtSettings__ExpiryInSeconds"                          = 60
-    "JwtSettings__Audience"                                 = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk" : "https://pdp-data-access-test-harness.netlify.app"
-    "JwtSettings__Kid"                                      = data.azurerm_key_vault_secret.cda_service_kid.value
-    "JwtSettings__Role"                                     = "owner"
-    "TokenIntegrationServiceUrl"                            = "https://token-integration-service-${local.loc}-${var.env}.azurewebsites.net/"
-    "PeiIntegrationServiceUrl"                              = "https://pei-integration-service-${local.loc}-${var.env}.azurewebsites.net/"
-    "OpenApiServerUrl"                                      = "${local.apim_base_url}/cda-service/"
-    "CosmosBusinessConfiguration__DatabaseId"               = "mhpd-business-layer"
-    "CosmosBusinessConfiguration__UserSessionDataContainer" = "mhpdUserSessionData"
+    "APPLICATIONINSIGHTS_CONNECTION_STRING"                                      = azurerm_application_insights.this.connection_string
+    "WEBSITE_ENABLE_SYNC_UPDATE_SITE"                                            = "true"
+    "KeyVaultConfiguration__KeyVaultURL"                                         = "https://kv-${var.product}-${var.env}-${local.loc}.vault.azure.net/"
+    "UriSettings__RedirectTargetUrl"                                             = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk/ig/authorize" : "https://pdp-data-access-test-harness.netlify.app/"
+    "JwtSettings__PrivateKey"                                                    = data.azurerm_key_vault_secret.cda_service_private_key.value
+    "JwtSettings__ExpiryInSeconds"                                               = 60
+    "JwtSettings__Audience"                                                      = var.env == "prod" ? "https://auth.find-your-pensions.service.gov.uk" : "https://pdp-data-access-test-harness.netlify.app"
+    "JwtSettings__Kid"                                                           = data.azurerm_key_vault_secret.cda_service_kid.value
+    "JwtSettings__Role"                                                          = "owner"
+    "TokenIntegrationServiceUrl"                                                 = "https://token-integration-service-${local.loc}-${var.env}.azurewebsites.net/"
+    "PeiIntegrationServiceUrl"                                                   = "https://pei-integration-service-${local.loc}-${var.env}.azurewebsites.net/"
+    "OpenApiServerUrl"                                                           = "${local.apim_base_url}/cda-service/"
+    "CosmosBusinessConfiguration__DatabaseId"                                    = "mhpd-business-layer"
+    "CosmosBusinessConfiguration__UserSessionDataContainer"                      = "mhpdUserSessionData"
+    "Logging__ApplicationInsights__SamplingSettings__IsEnabled"                  = "true"
+    "Logging__ApplicationInsights__SamplingSettings__MaxTelemetryItemsPerSecond" = "20"
+    "Logging__ApplicationInsights__SamplingSettings__ExcludedTypes"              = "Exception"
+    "Logging__LogLevel__Default"                                                 = "Information"
+    "Logging__LogLevel__Host.Triggers"                                           = "Warning"
+    "Logging__LogLevel__Host.Triggers.ServiceBus"                                = "Warning"
+    "Logging__LogLevel__Host.Results"                                            = "Warning"
+    "Logging__LogLevel__Function"                                                = "Information"
+    "Logging__LogLevel__Azure"                                                   = "Warning"
+    "Logging__LogLevel__Azure.Core"                                              = "Warning"
+    "Logging__LogLevel__Azure.Storage.Blobs"                                     = "Error"
+    "Logging__LogLevel__Azure.Messaging.ServiceBus"                              = "Error"
+    "Logging__LogLevel__Microsoft"                                               = "Warning"
+    "Logging__LogLevel__Microsoft.Azure.WebJobs"                                 = "Warning"
+    "Logging__LogLevel__Microsoft.Azure.WebJobs.ServiceBus"                      = "Warning"
+    "Logging__LogLevel__Microsoft.Azure.WebJobs.Script"                          = "Warning"
+    "Logging__LogLevel__Microsoft.Hosting.Lifetime"                              = "Warning"
+    "Logging__LogLevel__Microsoft.AspNetCore"                                    = "Warning"
+    "Logging__LogLevel__Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware"  = "Warning"
+    "Logging__LogLevel__System.Net.Http.HttpClient"                              = "Warning"
   }
 }

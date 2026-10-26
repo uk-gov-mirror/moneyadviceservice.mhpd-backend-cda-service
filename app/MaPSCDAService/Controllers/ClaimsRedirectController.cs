@@ -1,4 +1,6 @@
 ﻿using MaPSCDAService.Models;
+using MhpdCommon.Constants;
+using MhpdCommon.ErrorHandling;
 using MhpdCommon.Extensions;
 using MhpdCommon.Models.MessageBodyModels;
 using MhpdCommon.Models.MHPDModels;
@@ -32,6 +34,8 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
             return BadRequest(validationMessage);
         }
 
+        using var scope = logger.BeginCorrelationScope(request.CorrelationId!, $"{Constants.LogSource} Claims Gathering");
+
         var rqp = tokenUtility.GenerateJwt(new CustomClaimDataModel
         {
             Subject = request.UserSessionId + "@" + request.Iss,
@@ -46,6 +50,8 @@ public class ClaimsRedirectController(ILogger<ClaimsRedirectController> logger,
         
         if(!validator.IsValidPeisId(sessionData.PeisId))
         {
+            var context = ErrorContext.FromErrorCode(PensionProviderConstants.RetrievalErrorCodes.DataInvalidPei, "CDA Service");
+            logger.LogServiceError(Constants.MissingOrInvalidRedirectPeisId, context);
             return GetServerErrorResponse(Constants.MissingOrInvalidRedirectPeisId);
         }
 
